@@ -1,4 +1,10 @@
 <?php
+error_reporting(E_ALL);
+if (!function_exists('str_contains')) {
+	function str_contains($haystack, $needle) {
+		return $needle !== '' && strpos($haystack, $needle) !== false;
+	}
+}
 $data_path = file_get_contents(__DIR__ . '/DATA_PATH');
 function check_captcha() {
 	if ($_SESSION['no_captcha'] && !isset($_POST['captcha_required'])) return 0;
