@@ -1,0 +1,88 @@
+<html>
+
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>exposure camera</title>
+</head>
+<div id="pad" style="text-align: center;"></div>
+<div style="text-align: right;" id="form">
+	<label>
+		<input type="checkbox" onchange="options.grayscale = this.checked;" />
+		Grayscale
+	</label>
+	<button onclick="options.exposure = Math.max(1, options.exposure - 1); document.querySelector('#exposure').textContent = options.exposure;">-</button>
+	Exposure: x<span id="exposure">1</span>
+	<button onclick="options.exposure = Math.max(1, options.exposure + 1); document.querySelector('#exposure').textContent = options.exposure;">+</button>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"
+	integrity="sha512-I0Pwwz3PPNQkWes+rcSoQqikKFfRmTfGQrcNzZbm8ALaUyJuFdyRinl805shE8xT6iEWsWgvRxdXb3yhQNXKoA=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+	function update() {
+		draw.clear();
+		if (!capture || !capture.width || !capture.height) return;
+		if (capture.width / capture.height > innerWidth / (innerHeight - bar_height)) {
+			var scale = innerWidth / capture.width;
+		} else {
+			var scale = (innerHeight - bar_height) / capture.height;
+		}
+		
+		capture.loadPixels();
+		for (var i = 0; i < capture.pixels.length; i += 4) {
+			var pixels = [capture.pixels[i], capture.pixels[i + 1], capture.pixels[i + 2]];
+			if (options.grayscale) {
+				var gray = pixels[0] * 0.2126 + pixels[1] * 0.7152 + pixels[2] * 0.0722;
+				pixels[0] = gray;
+				pixels[1] = gray;
+				pixels[2] = gray;
+			}
+			for (var j = 0; j < 3; j++) pixels[j] *= options.exposure;
+			capture.pixels[i + 0] = Math.min(255, pixels[0]);
+			capture.pixels[i + 1] = Math.min(255, pixels[1]);
+			capture.pixels[i + 2] = Math.min(255, pixels[2]);
+		}
+		capture.updatePixels();
+		draw.image(capture, (innerWidth - capture.width * scale) / 2, 0, capture.width * scale, capture.height * scale);
+	}
+	var s = function (sketch) {
+		sketch.setup = async function () {
+			sketch.createCanvas(innerWidth, innerHeight - bar_height);
+			draw.angleMode('degrees');
+			draw.frameRate(30);
+			draw.strokeCap('square');
+			draw.textAlign('center', 'center');
+			capture = draw.createGraphics(1, 1);
+			capture = draw.createCapture('video', function (s) {
+				stream = s;
+			});
+			onresize(null);
+		};
+		sketch.draw = update;
+	}
+	var bar_height = 20;
+	var draw = new p5(s, 'pad');
+	var stream = null;
+	var form = document.querySelector('#form');
+	var options = {
+		exposure: 1,
+		grayscale: 0
+	};
+	onresize = function (ev) {
+		bar_height = innerHeight - (form.getBoundingClientRect().y);
+		draw.resizeCanvas(innerWidth, innerHeight - bar_height);
+	}
+</script>
+<style>
+	video {
+		display: none;
+	}
+
+	body,
+	html {
+		padding: 0;
+		margin: 0;
+	}
+</style>
+</body>
+
+</html>

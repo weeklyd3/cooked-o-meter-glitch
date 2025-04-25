@@ -1,0 +1,118 @@
+body,
+button {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+	background-color: lightgray;
+}
+
+body>.content {
+	padding: 5px;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 5px;
+}
+
+.header>h1 {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.header {
+	display: flow-root;
+}
+
+form.table-display {
+	display: table;
+}
+
+form.table-display>label:not(.no-table-row),
+form.table-display>.table-row {
+	display: table-row;
+}
+
+form.table-display>label:not(.no-table-row)>span {
+	display: table-cell;
+	padding: 3px;
+}
+
+form.table-display>label:not(.no-table-row)>input:not(.no-input-cell),
+form.table-display>label:not(.no-table-row)>.input-cell {
+	display: table-cell;
+	padding: 3px;
+}
+
+.fake-input {
+	border-radius: 2px;
+	border: 1px solid gray;
+	font-size: 12px;
+	padding: 3px;
+}
+
+.fake-select {
+	border-radius: 2px;
+	border: 1px solid gray;
+	background-color: lightgray;
+	font-size: 12px;
+	padding: 3px;
+}
+
+.error {
+	background-color: lightpink;
+	border: 1px solid darkred;
+	color: darkred;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.bold-red {
+	color: darkred;
+	font-weight: bold;
+}
+
+.hidden2eyes {
+	position: absolute;
+	top: -10000px;
+	left: -10000px;
+}
+
+nav ul>li {
+	display: inline;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+nav ul {
+	padding: 0;
+}
+
+/* https://stackoverflow.com/a/41679399/15578194 */
+span.frac {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+}
+
+span.frac>sup,
+span.frac>sub {
+	display: block;
+	font: inherit;
+	padding: 0 0.3em;
+}
+
+span.frac>sup {
+	border-bottom: 0.08em solid;
+}
+
+span.frac>span {
+	display: none;
+}
+
+canvas {
+	border: 1px solid black;
+	box-shadow: 10px 10px 10px lightgray;
+}
